@@ -7,8 +7,6 @@ from builtins import *
 
 from Hologram.CustomCloud import CustomCloud
 from Exceptions.HologramError import HologramError
-#from hologram_util import handle_timeout
-#from hologram_util import VAction
 
 import json
 import psutil
@@ -27,6 +25,7 @@ def modem_connect():
         cloud.network.connect()
     except Exception as e:
         print(e)
+        hologram.modem_disconnect()
         
 
 def modem_disconnect():
@@ -64,3 +63,12 @@ def modem_type():
     cloud = CustomCloud(None, network='cellular')
     print('Type: {}'.format(str(cloud.network.description)))
 
+def main():
+    while True:
+        if not hologram.modem_connection_status():
+            hologram.modem_connect();
+        time.sleep(10)
+
+
+if __name__ == "__main__":
+    main()
