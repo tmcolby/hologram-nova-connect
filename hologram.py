@@ -15,6 +15,8 @@ import psutil
 import subprocess
 import time
 
+import hologram
+
 def modem_connect():
     """
     establish ppp connection to hologram network
@@ -27,6 +29,12 @@ def modem_connect():
         print(e)
         
 
+def modem_disconnect():
+    pppPid = hologram.modem_connection_status()
+    if pppPid:
+       print('Killing pid {} now'.format(pppPid))
+       psutil.Process(pppPid).terminate()
+
 def modem_connection_status():
     print('Checking for existing PPP sessions')
     for proc in psutil.process_iter():
@@ -38,7 +46,7 @@ def modem_connection_status():
 
         if 'pppd' in pinfo['name']:
             print('Found existing PPP session on pid: {}'.format(pinfo['pid']))
-            return True
+            return pinfo['pid']
             # print 'Killing pid %s now' % pinfo['pid']
             # psutil.Process(pinfo['pid']).terminate()
     print('No PPP session running. Not Connected')
