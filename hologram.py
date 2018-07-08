@@ -43,7 +43,7 @@ def modem_disconnect():
        psutil.Process(pppPid).terminate()
 
 def modem_connection_status():
-    print('Checking for existing PPP sessions')
+    #print('Checking for existing PPP sessions')
     for proc in psutil.process_iter():
         try:
             pinfo = proc.as_dict(attrs=['pid', 'name'])
@@ -52,11 +52,11 @@ def modem_connection_status():
             return False
 
         if 'pppd' in pinfo['name']:
-            print('Found existing PPP session on pid: {}'.format(pinfo['pid']))
+            #print('Found existing PPP session on pid: {}'.format(pinfo['pid']))
             return pinfo['pid']
             # print 'Killing pid %s now' % pinfo['pid']
             # psutil.Process(pinfo['pid']).terminate()
-    print('No PPP session running. Not Connected')
+    #print('No PPP session running. Not Connected')
     return False
 
 def modem_sim():
@@ -76,13 +76,22 @@ def main():
         hologramModemAttached = hologram.modem_usb_find()
         hologramPppRunning = hologram.modem_connection_status()
         if hologramModemAttached and not hologramPppRunning:
+            print("Hologram modem attached, but PPP not running..")
+            print("Connecting...")
             hologram.modem_connect()
         elif not hologramModemAttached and hologramPppRunning:
+            print("Hologram modem not attached, and PPP is running..")
+            print("Killing PPP...")
             hologram.modem_disconnect()
+        elif not hologramModemAttached and not hologramPppRunning:
+            print("Hologram modem is not attached.. :(")
+        else:
+            print("Hologram modem is attached, and PPP is running.. Yay!")
 
         #if hologram.modem_usb_find():
         #    if not hologram.modem_connection_status():
         #        hologram.modem_connect();
+        print("Sleeping now...")
         time.sleep(10)
 
 
