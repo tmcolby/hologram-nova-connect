@@ -66,6 +66,7 @@ def modem_sim():
 def modem_operator():
     cloud = CustomCloud(None, network='cellular')
     print('Operator: {}'.format(str(cloud.network.operator)))
+    return cloud.network.operator
 
 def modem_type():
     cloud = CustomCloud(None, network='cellular')
@@ -76,17 +77,21 @@ def main():
         hologramModemAttached = hologram.modem_usb_find()
         hologramPppRunning = hologram.modem_connection_status()
         if hologramModemAttached and not hologramPppRunning:
-            print("Hologram modem attached, but PPP not running..")
-            print("Connecting...")
-            hologram.modem_connect()
+            print("Hologram modem attached to USB, but PPP is not running..")
+            print("Cheecking if the modem is attached to an operator...")
+            hologramModemOperator = hologram.modem_operator()
+            if hologramModemOperator is not None:
+                print("Modem attached to {}".format(hologramModemOperator))
+                print("Attempting to connect a data session...")
+                hologram.modem_connect()
         elif not hologramModemAttached and hologramPppRunning:
-            print("Hologram modem not attached, and PPP is running..")
+            print("Hologram modem not attached to USB, and PPP is running..")
             print("Killing PPP...")
             hologram.modem_disconnect()
         elif not hologramModemAttached and not hologramPppRunning:
-            print("Hologram modem is not attached.. :(")
+            print("Hologram modem is not attached to USB.. :(")
         else:
-            print("Hologram modem is attached, and PPP is running.. Yay!")
+            print("Hologram modem is attached to USB, and PPP is running.. Yay!")
 
         #if hologram.modem_usb_find():
         #    if not hologram.modem_connection_status():
