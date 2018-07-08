@@ -14,6 +14,14 @@ import subprocess
 import time
 
 import hologram
+import usb.core as usb
+
+#ublox vendor and product codes
+ubloxIdVendor=0x1546
+ubloxIdProduct=0x1102
+
+def modem_usb_find():
+    return usb.find(idVendor=ubloxIdVendor, idProduct=ubloxIdProduct)
 
 def modem_connect():
     """
@@ -65,8 +73,16 @@ def modem_type():
 
 def main():
     while True:
-        if not hologram.modem_connection_status():
-            hologram.modem_connect();
+        hologramModemAttached = hologram.modem_usb_find()
+        hologramPppRunning = hologram.modem_connection_status()
+        if hologramModemAttached and not hologramPppRunning:
+            hologram.modem_connect()
+        elif not hologramModemAttached and hologramPppRunning:
+            hologram.modem_disconnect()
+
+        #if hologram.modem_usb_find():
+        #    if not hologram.modem_connection_status():
+        #        hologram.modem_connect();
         time.sleep(10)
 
 
