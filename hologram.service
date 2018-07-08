@@ -1,0 +1,12 @@
+[Unit]
+Description=Hologram: persistant modem connect
+After=network.target
+
+[Service]
+WorkingDirectory=/home/tyson/hologram
+ExecStart=/home/tyson/hologram/hologram.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+Alias=hologram.service
