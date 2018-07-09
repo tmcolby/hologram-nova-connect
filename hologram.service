@@ -1,5 +1,5 @@
 [Unit]
-Description=Hologram: persistant modem connect
+Description=Hologram modem service
 #After=network.target
 #StartLimitInterval=200
 #StartLimitBurst=5
@@ -9,7 +9,9 @@ WorkingDirectory=/home/tyson/hologram
 ExecStart=/usr/bin/python /home/tyson/hologram/hologram.py
 #Restart=always
 #RestartSec=15
+Type=oneshot
+KillMode=none
 
-[Install]
-WantedBy=multi-user.target
-Alias=hologram.service
+#[Install]
+#WantedBy=multi-user.target
+#Alias=hologram.service
