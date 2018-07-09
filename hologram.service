@@ -5,7 +5,7 @@ Description=Hologram modem service
 #StartLimitBurst=5
 
 [Service]
-WorkingDirectory=/home/tyson/hologram
+WorkingDirectory=/opt/hologram
 ExecStart=/usr/bin/python /opt/hologram/hologram.py
 #Restart=always
 #RestartSec=15
