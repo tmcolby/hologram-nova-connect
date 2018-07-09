@@ -16,3 +16,7 @@ Clone this git repo and run the `install.sh` script.
 
 #### Notes
 This currently is set to look for the Nova 2G/3G modem.  If you are using the LTE Cat-M1 modem, modify the idProduct string in the hologram.py file.
+
+The install script is not comprehensive.  It assumes you have https://github.com/hologram-io/hologram-python installed already.
+
+You may need to install some python depencies.  You can do a `sudo pip install -r requirements.pip`.
