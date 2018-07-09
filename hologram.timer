@@ -4,7 +4,7 @@ Description=Run Hologram service every 15 seconds
 [Timer]
 #OnBootSec=15sec
 OnUnitActiveSec=15sec
-#OnActiveSec=1sec
+OnActiveSec=1sec
 #AccuracySec=1sec
 
 [Install]
